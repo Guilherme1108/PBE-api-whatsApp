@@ -44,26 +44,51 @@ const getAllUserDados = function (number) {
 
 
 const getPersonalUserDados = function (number){
-    let message = { status: true, status_code: 200, development: 'Guilherme Moreira', personalDados: [] }
+    let message = { status: true, status_code: 200, development: 'Guilherme Moreira', personalDados: [] 
+    }
+
+    
+    const userFind = dados.contatos['whats-users'].find(user => user.number === number)
+
+    if (userFind) {
+        const user = userFind.contacts
+
+        message.personalDados = {
+            name: user.name,
+            description: user.description,
+            image: user.image
+        }
+        return message
+    } else {
+        return MESSAGE_ERRO
+    }
+}
+
+console.log(getPersonalUserDados('11987876567'))
+
+const getAllPersonalDados = function (number) {
+    //Variavel de base para o cabeçalho da API
+    let message = { status: true, status_code: 200, development: 'Guilherme Moreira', allPersonalDados: [] }
 
     const userFind = dados.contatos['whats-users'].find(user => user.number === number)
 
     if (userFind) {
-        message.personalDados = {
-            name: userFind.contacts.name,
-            description: userFind.contacts.description,
-            image: userFind.contacts.image
-        }
+        const user = userFind.contacts[0]
+        message.allPersonalDados.push(user)
+
         return message
     } else {
-        return MESSAGE_ERRO //Falsa 500
+        return MESSAGE_ERRO
     }
 }
-console.log(getPersonalUserDados())
+
+//console.log(getAllPersonalDados('11987876567'))
+
 
 
 
 module.exports = {
     getAllDados,
-    getAllUserDados
+    getAllUserDados,
+    getPersonalUserDados
 }
